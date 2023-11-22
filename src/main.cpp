@@ -4,17 +4,17 @@
 
 #define VERBOSE 1
 
+#define CHANNEL 1
+
 #define MAX_WAIT_RESPONSE_TIME 10000
 
 long currentMillis = millis();
 
 #define RETRY_INTERVAL 50
 
-uint8_t mac[] = {0xDC, 0x4F, 0x22, 0x10, 0xCA, 0x8A};
-
 static uint8_t broadcastAddress[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-uint8_t msg[] = "{\"id\":\"gio\",\"command\":\"toggle\"}";
+uint8_t msg[] = "{\"id\":\"gio\",\"type\":\"button\",\"command\":\"toggle\"}";
 uint8_t len = sizeof(msg);
 
 void receiveCallBackFunction(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) 
@@ -59,9 +59,9 @@ void setup() {
 #ifdef VERBOSE  
   Serial.println("Slave ready. Waiting for messages...");
 #endif
-  esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
+  esp_now_add_peer(broadcastAddress, ESP_NOW_ROLE_SLAVE, CHANNEL, NULL, 0);
 
-  delay(150);
+  delay(5);
 
   esp_now_send(broadcastAddress, msg, len);
   
