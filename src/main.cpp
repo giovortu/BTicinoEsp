@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
-#define VERBOSE 1
+//#define VERBOSE 1
 
 #define CHANNEL 1
 
@@ -19,11 +19,11 @@ uint8_t len = sizeof(msg);
 
 void receiveCallBackFunction(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) 
 {
+#ifdef VERBOSE 
   Serial.println( (char*)incomingData);
-  ESP.deepSleep(0);
-#ifdef VERBOSE  
   Serial.println("Sleep!");
 #endif
+  ESP.deepSleep(0);
 }
 
 void sendCallBackFunction(u8 *mac_addr, u8 status) 
@@ -38,12 +38,13 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
 
-  Serial.begin(115200);
 #ifdef VERBOSE  
+  Serial.begin(115200);
   Serial.println();
   Serial.println("ESP-Now Sender");
   Serial.printf("Transmitter mac: %s\n", WiFi.macAddress().c_str());
 #endif
+
   if (esp_now_init() != 0) 
   {
 #ifdef VERBOSE      
@@ -52,6 +53,7 @@ void setup() {
     delay(RETRY_INTERVAL);
     ESP.restart();
   }
+  
   esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
   
   esp_now_register_recv_cb(receiveCallBackFunction);
