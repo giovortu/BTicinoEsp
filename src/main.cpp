@@ -2,7 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <espnow.h>
 
-//#define VERBOSE 1
+#define VERBOSE 1
 
 #define CHANNEL 1
 
@@ -14,7 +14,7 @@ long currentMillis = millis();
 
 static uint8_t broadcastAddress[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
-uint8_t msg[] = "{\"id\":\"gio\",\"type\":\"button\",\"command\":\"toggle\"}";
+uint8_t msg[] = "{\"id\":\"bagno\",\"type\":\"button\",\"command\":\"toggle\"}";
 uint8_t len = sizeof(msg);
 
 void receiveCallBackFunction(uint8_t *senderMac, uint8_t *incomingData, uint8_t len) 
